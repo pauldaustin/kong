@@ -275,5 +275,8 @@ build = {
     ["kong.plugins.aws-lambda.handler"] = "kong/plugins/aws-lambda/handler.lua",
     ["kong.plugins.aws-lambda.schema"] = "kong/plugins/aws-lambda/schema.lua",
     ["kong.plugins.aws-lambda.v4"] = "kong/plugins/aws-lambda/v4.lua",
+
+    ["kong.plugins.upstream-auth-basic.handler"] = "kong/plugins/upstream-auth-basic/handler.lua",
+    ["kong.plugins.upstream-auth-basic.schema"] = "kong/plugins/upstream-auth-basic/schema.lua",
   }
 }
