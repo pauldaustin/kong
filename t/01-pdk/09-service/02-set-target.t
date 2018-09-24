@@ -3,8 +3,6 @@ use warnings FATAL => 'all';
 use Test::Nginx::Socket::Lua;
 use t::Util;
 
-$ENV{TEST_NGINX_HTML_DIR} ||= html_dir();
-
 plan tests => repeat_each() * (blocks() * 3);
 
 run_tests();
@@ -32,7 +30,7 @@ host must be a string
 
 
 
-=== TEST 2: service.set_target() sets ngx.ctx.balancer_address.host
+=== TEST 2: service.set_target() sets ngx.ctx.balancer_data.host
 --- http_config eval: $t::Util::HttpConfig
 --- config
     location = /t {
@@ -43,14 +41,14 @@ host must be a string
             local PDK = require "kong.pdk"
             local pdk = PDK.new()
 
-            ngx.ctx.balancer_address = {
+            ngx.ctx.balancer_data = {
                 host = "foo.xyz"
             }
 
             local ok = pdk.service.set_target("example.com", 123)
 
             ngx.say(tostring(ok))
-            ngx.say("host: ", ngx.ctx.balancer_address.host)
+            ngx.say("host: ", ngx.ctx.balancer_data.host)
         }
     }
 --- request
@@ -71,7 +69,7 @@ host: example.com
             local PDK = require "kong.pdk"
             local pdk = PDK.new()
 
-            ngx.ctx.balancer_address = 8000
+            ngx.ctx.balancer_data = 8000
 
             local pok, err = pcall(pdk.service.set_target, "example.com", "foo")
             ngx.say(err)
@@ -94,7 +92,7 @@ port must be an integer
             local PDK = require "kong.pdk"
             local pdk = PDK.new()
 
-            ngx.ctx.balancer_address = 8000
+            ngx.ctx.balancer_data = 8000
 
             local pok, err = pcall(pdk.service.set_target, "example.com", 123.4)
 
@@ -118,7 +116,7 @@ port must be an integer
             local PDK = require "kong.pdk"
             local pdk = PDK.new()
 
-            ngx.ctx.balancer_address = 8000
+            ngx.ctx.balancer_data = 8000
 
             local pok, err = pcall(pdk.service.set_target, "example.com", -1)
             ngx.say(err)
@@ -147,14 +145,14 @@ port must be an integer between 0 and 65535: given 70000
             local PDK = require "kong.pdk"
             local pdk = PDK.new()
 
-            ngx.ctx.balancer_address = {
+            ngx.ctx.balancer_data = {
                 port = 8000
             }
 
             local ok = pdk.service.set_target("example.com", 1234)
 
             ngx.say(tostring(ok))
-            ngx.say("port: ", ngx.ctx.balancer_address.port)
+            ngx.say("port: ", ngx.ctx.balancer_data.port)
         }
     }
 --- request
